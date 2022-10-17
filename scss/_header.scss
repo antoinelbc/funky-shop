@@ -1,0 +1,15 @@
+.header-container {
+    padding: 2em 6em;
+    display: flex;
+    justify-content: space-between;
+    background-color: #003865;
+}
+
+.header-container a {
+    color: white;
+}
+
+.primary-menu ul {
+    display: flex;
+    gap: 2em;
+}

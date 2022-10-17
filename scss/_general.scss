@@ -1,0 +1,33 @@
+html {
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    /* position: fixed; */
+    font-size: 62.5%;
+}
+
+body {
+    flex: 1 0;
+    font-size: 1.6rem;
+    /*font-family: 'Quicksand', sans-serif;*/
+}
+
+html,
+body {
+    overflow: auto;
+}
+
+a {
+    text-decoration: none;
+}
+
+ul li {
+    list-style-type: none;
+}
+
+.global-container {
+    margin: 0 auto;
+    max-width: 1400px;
+    padding: 0em 2em;
+}
