@@ -281,12 +281,17 @@ template {
   object-fit: contain;
 }
 
+html,
+body {
+  overflow: auto;
+  height: 100%;
+}
+
 html {
   top: 0;
   left: 0;
   width: 100%;
-  height: 100%;
-  /* position: fixed; */
+  position: fixed;
   font-size: 62.5%;
 }
 
@@ -294,11 +299,6 @@ body {
   flex: 1 0;
   font-size: 1.6rem;
   /*font-family: 'Quicksand', sans-serif;*/
-}
-
-html,
-body {
-  overflow: auto;
 }
 
 a {
@@ -323,18 +323,32 @@ ul li {
 }
 
 .header-container a {
+  display: flex;
+  align-items: center;
+  gap: 0.4em;
   color: white;
+  font-size: 1.8rem;
+  transition: 0.2s ease;
+}
+.header-container a .adaptive-img--contain {
+  width: 16px;
+  height: 16px;
+  filter: invert(95%) sepia(17%) saturate(453%) hue-rotate(47deg) brightness(99%) contrast(94%);
+}
+
+.header-container a:hover {
+  color: #D4F6CC;
 }
 
 .primary-menu ul {
   display: flex;
   gap: 2em;
 }
-
 footer {
   width: 100%;
-  position: fixed;
+  right: 0;
   bottom: 0;
+  left: 0;
   background-color: #003865;
 }
 
@@ -358,6 +372,29 @@ footer {
   background-color: white;
   padding: 1em;
   border-radius: 4px;
+}
+
+.product-form-container {
+  display: flex;
+}
+
+.product-form {
+  width: 30em;
+  height: 50em;
+  display: flex;
+  flex-direction: column;
+  gap: 0.3em;
+}
+.product-form label {
+  margin-top: 0.6em;
+}
+.product-form .submit-btn-container {
+  margin-top: 2em;
+  display: flex;
+  justify-content: center;
+}
+.product-form .submit-btn-container input {
+  width: 40%;
 }
 
 /*# sourceMappingURL=style.css.map */

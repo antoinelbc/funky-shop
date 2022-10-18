@@ -1,6 +1,22 @@
-<?php require_once("./src/header.php");
+<?php require_once("header.php");
 
 //--------------------->> TREATMENT
+
+//------- Login / logout
+
+if(isset($_GET['action']) && $_GET['action'] == "logout")
+{
+    session_destroy();
+    header("location:login.php"); 
+}
+
+//if member logged and get login page, it redirects to his account
+if(member_logged()){
+    header("location:account.php");
+}
+
+
+//--------- Login form 
 
 if($_POST)
 {
@@ -41,4 +57,4 @@ if($_POST)
      <input type="submit" name="login" value="Se connecter">
 </form>
 
-<?php require_once("./src/footer.php"); ?>
+<?php require_once("footer.php"); ?>

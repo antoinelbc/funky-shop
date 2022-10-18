@@ -1,4 +1,4 @@
-<?php require_once("./src/header.php"); 
+<?php require_once("header.php"); 
 
 //--------------------->> TREATMENT
 
@@ -38,7 +38,7 @@ if(isset($_POST['register']))
             }
             
             query_execution("INSERT INTO member (pseudo, pass, lastname, firstname, email, adress, city, zip_code) VALUES ('$_POST[pseudo]', '$_POST[pass]', '$_POST[lastname]', '$_POST[firstname]', '$_POST[email]', '$_POST[adress]', '$_POST[city]', '$_POST[zip_code]')");
-            echo "<div class='validation'>Votre inscription a bien été prise en compte. <a href=\"connexion.php\">Cliquez ici pour vous connecter</a></div>";
+            echo "<div class='validation'>Votre inscription a bien été prise en compte. <a href=\"login.php\">Cliquez ici pour vous connecter</a></div>";
         }
     }
 }
@@ -75,4 +75,4 @@ if(isset($_POST['register']))
 </form>
 
 
-<?php require_once("./src/footer.php"); ?>
+<?php require_once("footer.php"); ?>

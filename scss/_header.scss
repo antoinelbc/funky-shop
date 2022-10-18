@@ -6,10 +6,28 @@
 }
 
 .header-container a {
+    display: flex;
+    align-items: center;
+    gap: 0.4em;
     color: white;
+    font-size: 1.8rem;
+    transition: 0.2s ease;
+    .adaptive-img--contain{
+        width: 16px;
+        height:16px;
+        filter: invert(95%) sepia(17%) saturate(453%) hue-rotate(47deg) brightness(99%) contrast(94%);
+    }
+}
+
+.header-container a:hover{
+    color: #D4F6CC;
 }
 
 .primary-menu ul {
     display: flex;
     gap: 2em;
+    li{
+
+    }
 }
+
