@@ -13,88 +13,198 @@ if(!admin_logged()){
 
 //------- Insert product
 
-
-//ICI LE DATA VALIDATOR
-
-//TRANSFERT DE FICHIER
-
 $message = "";
+
 
 if(isset($_POST['validate']))
 {
-    $file_informations = $_FILES['image'];
-    
-    $file_name = $file_informations['name'];
-    $type_mime = $file_informations['type'];
-    $file_size = $file_informations['size'];
-    $temporary_file = $file_informations['tmp_name'];
-    $error_code = $file_informations['error'];
 
-    switch ($error_code){
-        case UPLOAD_ERR_OK :
+//1 - File transfer
+
+    $file = $_FILES['product_image'];
+    
+    $file_name = $file['name'];
+    $type_mime = $file['type'];
+    $file_size = $file['size'];
+    $temporary_file = $file['tmp_name'];
+    $error_code = $file['error'];
+
+    $image_bdd = ROOT_SITE . "photos/$file_name";
+
+// The switch below handles different types of errors (related to $_FILES['error'])
+switch ($error_code){
+    case UPLOAD_ERR_OK :
+
+    if (is_uploaded_file($temporary_file)) {
+        $validate_mime_type = mime_content_type($temporary_file);  
+    
+            $allowed_file_types = ['image/png', 'image/jpeg', 'image.jpg'];
+        if (! in_array($validate_mime_type, $allowed_file_types)) {
+            $message = "Erreur : fichier de type <strong>" . $type_mime . ".</strong> <br> Veuillez fournir un fichier de type image (<strong>png, jpeg ou jpg</strong>)";
+        }
+        else{
             $destination = "C:\wamp64\www\FUNKY-SHOP/photos/$file_name";
-            if (copy($temporary_file, $destination)) {
-                $message = "Trasnfert terminé - Fichier = $file_name <br>";
-                $message .= "Taille = $file_size octets <br>";
-                $message .= "Type de fichier = $type_mime.";
-            } else {
-                $message = "Le fichier n'a pas pu être copié sur le serveur.";
-            }
-            break;
-        case UPLOAD_ERR_NO_FILE :
-            $message = "Aucun fichier saisi.";
-            break;
-        case UPLOAD_ERR_INI_SIZE :
-            $message = "Fichier $file_name non transféré";
-            $message .= ' (taille > upload_max_filesize) . ';
-            break;
-        case UPLOAD_ERR_FORM_SIZE :
-            $message = "Fichier $file_name non transféré";
-            $message .= ' (taille > MAX_FILE_SIZE) . ';
-            break;
-        case UPLOAD_ERR_PARTIAL : 
-            $message = "Fichier $file_name non transféré";
-            $message .= ' (Problème lors du transfert) . ';
-            break;
-        case UPLOAD_ERR_NO_TMP_DIR :
-            $message = "Fichier $file_name non transféré";
-            $message .= ' (pas de répertoire temporaire) . ';
-            break;
-        case UPLOAD_ERR_CANT_WRITE : 
-            $message = "Fichier $file_name non transféré";
-            $message .= ' (erreur lors de l\'écriture du fichier sur le disque) . ';
-            break;
-        case UPLOAD_ERR_EXTENSION :
-            $message = "Fichier $file_name non transféré";
-            $message .= ' (transfert stopppé par l\'extension) . ';
-            break;
-        default : 
-            $message = "Fichier non transféré";
-            $mesage .= " (erreur inconnue : $error_code ) . ";
-    }
+                if (move_uploaded_file($temporary_file, $destination)) {
+                    $message = "Transfert terminé - Fichier = $file_name <br>";
+                    $message .= "Taille = $file_size octets <br>";
+                    $message .= "Type de fichier = $type_mime.";
+                } else {
+                    $message = "Le fichier n'a pas pu être copié sur le serveur.";
+                } 
+        }
+    }   
+        break;
+    case UPLOAD_ERR_NO_FILE :
+        $message = "Aucun fichier n'a été téléchargé.";
+        break;
+    case UPLOAD_ERR_INI_SIZE : // value of upload_max_filesize in php.ini changed to 3M.
+        $message = "Fichier $file_name non transféré";
+        $message .= 'Le fichier est trop volumineux (Taille maximale supportée : 3 Mo). ';
+        break;
+    case UPLOAD_ERR_FORM_SIZE :
+        $message = "Fichier $file_name non transféré";
+        $message .= 'Le fichier est trop volumineux (Taille maximale supportée : 3 Mo) ';
+        break;
+    case UPLOAD_ERR_PARTIAL : 
+        $message = "Fichier $file_name non transféré";
+        $message .= ' Problème lors du transfert. Le fichier n\'a été que partiellement téléchargé.';
+        break;
+    case UPLOAD_ERR_NO_TMP_DIR :
+        $message = "Fichier $file_name non transféré";
+        $message .= 'Répertoire temporaire manquant.';
+        break;
+    case UPLOAD_ERR_CANT_WRITE : 
+        $message = "Fichier $file_name non transféré";
+        $message .= 'Erreur lors de l\'écriture du fichier sur le disque. ';
+        break;
+    case UPLOAD_ERR_EXTENSION :
+        $message = "Fichier $file_name non transféré";
+        $message .= 'Transfert stopppé par une extension PHP. ';
+        break;
+    default : 
+        $message = "Fichier non transféré";
+        $mesage .= " (erreur inconnue : $error_code ) . ";
+}
+
+//2 - Validate Datas
+
+    $reference = data_validator($_POST['reference']); 
+    $category= data_validator($_POST['category']);
+    $product_name = data_validator($_POST['product_name']);
+    $product_description = data_validator($_POST['product_description']); 
+    $size = data_validator($_POST['size']);
+    $color = data_validator($_POST['color']);
+    //$image_bdd = data_validator($_POST['product_image']);
+    $price = data_validator($_POST['price']);
+    $stock = data_validator($_POST['stock']);
+ 
+    foreach($_POST as $index => $value)
+        {
+            $_POST[$index] = htmlspecialchars(addSlashes($value));
+        }
+
+//3 - Execute Query
+
+    query_execution("INSERT INTO products (reference, category, product_name, product_description, size, color, product_image, price, stock) 
+    VALUES ('$_POST[reference]', '$_POST[category]', '$_POST[product_name]', '$_POST[product_description]', '$_POST[size]', '$_POST[color]', '$image_bdd', 
+    '$_POST[price]', '$_POST[stock]' )");
+
+    $message = "Le produit a été ajouté !";
+        
 }
 
 
+//------- See products
 
-//--------------------->> VIEW
-//enctype attribut into the form for upload files
+if(isset($_GET['action']) && $_GET['action'] == "products") {
+
+    $result = query_execution("SELECT * FROM products");
 ?>
 
+    <h2>Produits</h2>
+    <p>Nombre de produits dans la boutique : <?= $result->rowCount(); ?>  </p>
+    <table class="products-table">
+        <tr>
+            <th>Id Produit</th>
+            <th>Référence</th>
+            <th>Catégorie</th>
+            <th>Nom</th>
+            <th>Description</th>
+            <th>Taille</th>
+            <th>Couleur</th>
+            <th>Image</th>
+            <th>Prix</th>
+            <th>Stock</th>
+            <th>Modification</th>
+            <th>Suppression</th>
+        <tr>
+
+        <?php
+        $products = $result->fetchAll();
+        foreach ($products as $product){
+            ?>
+            <tr>
+                <td><?= $product['id_product']; ?></td>
+                <td><?= $product['reference']; ?></td>
+                <td><?= $product['category']; ?></td>
+                <td><?= $product['product_name']; ?></td>
+                <td><?= $product['product_description']; ?></td>
+                <td><?= $product['size']; ?></td>
+                <td><?= $product['color']; ?></td>
+                <td> <img src="<?= $product['product_image']; ?>" height="70" width="70"></td>
+                <td><?= $product['price']; ?> €</td>
+                <td><?= $product['stock']; ?></td>
+            </tr>
+            <?php
+        }
+        
+            
+        }
+    
+    
+        ?>
+
+    </table>
+
+<?php
+
+
+
+?>
+
+
+
+
+<?php
+//--------------------->> VIEW
+
+//enctype attribut into the form for upload files
+
+?>
+
+
+
+
 <h1>Gestion des produits</h1>
+
+<a href="?action=products">Voir les produits</a>
+<a href="?action=add-product">Ajouter un produit</a>
+
+
 
 <div class="product-form-container">
     <form class="product-form" method="POST" enctype="multipart/form-data" action="">
         <label for="reference">Référence</label>
-        <input type="text" id="reference" name="reference">
+        <input type="text" id="reference" name="reference" required="required">
         
         <label for="category">Catégorie</label>
-        <input type="text" id="catégory" name="category">
+        <input type="text" id="catégory" name="category" required="required">
 
         <label for="product_name">Nom du produit</label>
-        <input type="text" id="product_name" name="product_name">
+        <input type="text" id="product_name" name="product_name" required="required">
 
-        <label for="description">Description</label>
-        <textarea name="description" id="description" cols="30" rows="10"></textarea>
+        <label for="product_description">Description</label>
+        <textarea name="product_description" id="description" cols="30" rows="10"></textarea>
 
         <label for="size">Taille</label>
         <select name="size" id="size">
@@ -109,15 +219,15 @@ if(isset($_POST['validate']))
         <label for="color">Couleur</label>
         <input type="text" id="color" name="color">
 
-        <label for="image">Image</label>
+        <label for="product_image">Image</label>
         <input type="hidden" name="MAX_FILE_SIZE" value="3145728">
-        <input type="file" id="image" name="image">
+        <input type="file" id="image" name="product_image">
 
         <label for="price">Prix</label>
-        <input type="text" id="price" name="price">
+        <input type="text" id="price" name="price" required="required">
 
         <label for="stock">Stock</label>
-        <input type="text" id="stock" name="stock">
+        <input type="text" id="stock" name="stock" required="required">
 
         <div class=submit-btn-container>
             <input type="submit" name="validate" value="Valider">
