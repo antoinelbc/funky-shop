@@ -397,4 +397,14 @@ footer {
   width: 40%;
 }
 
+.products-table {
+  border: 1px solid black;
+  border-collapse: collapse;
+}
+.products-table th, .products-table td {
+  padding: 8px;
+  border: 1px solid black;
+  text-align: center;
+}
+
 /*# sourceMappingURL=style.css.map */

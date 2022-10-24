@@ -11,7 +11,7 @@ if(!admin_logged()){
     die();
 }
 
-//------- Insert product
+//------- INSERT product
 
 $message = "";
 
@@ -114,7 +114,7 @@ switch ($error_code){
 }
 
 
-//------- See products
+//------- SEE products
 
 if(isset($_GET['action']) && $_GET['action'] == "products") {
 
@@ -124,20 +124,23 @@ if(isset($_GET['action']) && $_GET['action'] == "products") {
     <h2>Produits</h2>
     <p>Nombre de produits dans la boutique : <?= $result->rowCount(); ?>  </p>
     <table class="products-table">
-        <tr>
-            <th>Id Produit</th>
-            <th>Référence</th>
-            <th>Catégorie</th>
-            <th>Nom</th>
-            <th>Description</th>
-            <th>Taille</th>
-            <th>Couleur</th>
-            <th>Image</th>
-            <th>Prix</th>
-            <th>Stock</th>
-            <th>Modification</th>
-            <th>Suppression</th>
-        <tr>
+        <thead>
+            <tr>
+                <th>Id Produit</th>
+                <th>Référence</th>
+                <th>Catégorie</th>
+                <th>Nom</th>
+                <th>Description</th>
+                <th>Taille</th>
+                <th>Couleur</th>
+                <th>Image</th>
+                <th>Prix</th>
+                <th>Stock</th>
+                <th>Modification</th>
+                <th>Suppression</th>
+            <tr>
+        </thead>
+        <tbody>
 
         <?php
         $products = $result->fetchAll();
@@ -154,6 +157,8 @@ if(isset($_GET['action']) && $_GET['action'] == "products") {
                 <td> <img src="<?= $product['product_image']; ?>" height="70" width="70"></td>
                 <td><?= $product['price']; ?> €</td>
                 <td><?= $product['stock']; ?></td>
+                <td><a href="?action=edit-product&id_product=<?= $product['id_product'] ?>">Modifier</a></td>
+                <td><a href="?action=delete-product&id_product=<?= $product['id_product'] ?>" onclick="return confirm('Etes-vous sûr de vouloir supprimer ce produit ?');">Supprimer</a></td>
             </tr>
             <?php
         }
@@ -163,12 +168,21 @@ if(isset($_GET['action']) && $_GET['action'] == "products") {
     
     
         ?>
-
+        </tbody>
     </table>
 
 <?php
 
+//------- DELETE product
 
+
+if(isset($_GET['action']) && $_GET['action'] == "delete-product"){
+    $result = query_execution("SELECT * FROM products WHERE id_product=$_GET[id_product]");
+    $product_delete = $result->fetch(PDO::FETCH_ASSOC);
+    
+    query_execution("DELETE FROM products WHERE id_product=$_GET[id_product]");
+    echo "Produit supprimé";
+}
 
 ?>
 
