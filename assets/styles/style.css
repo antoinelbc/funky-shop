@@ -310,7 +310,7 @@ ul li {
 }
 
 .global-container {
-  margin: 0 auto;
+  margin: 2em auto;
   max-width: 1400px;
   padding: 0em 2em;
 }
@@ -380,7 +380,7 @@ footer {
 
 .product-form {
   width: 30em;
-  height: 50em;
+  height: 60em;
   display: flex;
   flex-direction: column;
   gap: 0.3em;
