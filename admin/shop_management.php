@@ -2,36 +2,50 @@
 
 require_once("../header.php");
 
-//--------------------->> TREATMENT
+/*************************************************************************************************************************************************
+        TREATMENT         *******************************************************************************************************************************
+**************************************************************************************************************************************************/
 
-//------- Acces restricted
+/***************************************************** 
+ *ACCES RESTRICTED ON ADMIN PAGE 
+ *****************************************************/
 
 if(!admin_logged()){
     header("location: ./login.php");
     die();
 }
 
-//------- INSERT product
+/*****************************************************
+ INSERT OR EDIT PRODUCT 
+ *****************************************************/
 
 $message = "";
 
+/********* Form Treatment ********/ 
 
-    if(isset($_POST['validate']))
+if(isset($_POST['validate']))
+{
+
+    //1 - File transfer
+
+    if(isset($_GET['action']) && $_GET['action'] == 'edit-product')
     {
-
-        //1 - File transfer
-
-        $file = $_FILES['product_image'];
+        $image_bdd = $_POST['actual_product_image'];
+    }
     
-        $file_name = $file['name'];
-        $type_mime = $file['type'];
-        $file_size = $file['size'];
-        $temporary_file = $file['tmp_name'];
-        $error_code = $file['error'];
+    
+    $file = $_FILES['product_image'];
 
+    $file_name = $file['name'];
+    $type_mime = $file['type'];
+    $file_size = $file['size'];
+    $temporary_file = $file['tmp_name'];
+    $error_code = $file['error'];
+
+    if(!empty($file_name))
+    {
         $image_bdd = ROOT_SITE . "photos/$file_name";
-
-
+        //$image_bdd = "";
 
         // The switch below handles different types of errors (related to $_FILES['error'])
         switch ($error_code){
@@ -88,113 +102,115 @@ $message = "";
                 $mesage .= " (erreur inconnue : $error_code ) . ";
         }
 
+    }
 
     //2 - Validate Datas
 
-        $reference = data_validator($_POST['reference']);
-        $category= data_validator($_POST['category']);
-        $product_name = data_validator($_POST['product_name']);
-        $product_description = data_validator($_POST['product_description']); 
-        $size = data_validator($_POST['size']);
-        $color = data_validator($_POST['color']);
-        //$image_bdd = data_validator($_POST['product_image']);
-        $price = data_validator($_POST['price']);
-        $stock = data_validator($_POST['stock']);
-    
-        foreach($_POST as $index => $value)
-            {
-                $_POST[$index] = htmlspecialchars(addSlashes($value));
-            }
+    $reference = data_validator($_POST['reference']);
+    $category= data_validator($_POST['category']);
+    $product_name = data_validator($_POST['product_name']);
+    $product_description = data_validator($_POST['product_description']); 
+    $size = data_validator($_POST['size']);
+    $color = data_validator($_POST['color']);
+    //$image_bdd = data_validator($_POST['product_image']);
+    $price = data_validator($_POST['price']);
+    $stock = data_validator($_POST['stock']);
+
+    foreach($_POST as $index => $value)
+    {
+        $_POST[$index] = htmlspecialchars(addSlashes($value));
+    }
 
     //3 - Execute Query
 
-        query_execution("REPLACE INTO products (reference, category, product_name, product_description, size, color, product_image, price, stock) 
-        VALUES ('$_POST[reference]', '$_POST[category]', '$_POST[product_name]', '$_POST[product_description]', '$_POST[size]', '$_POST[color]', '$image_bdd', 
-        '$_POST[price]', '$_POST[stock]' )");
+    query_execution("REPLACE INTO products (reference, category, product_name, product_description, size, color, product_image, price, stock) 
+    VALUES ('$_POST[reference]', '$_POST[category]', '$_POST[product_name]', '$_POST[product_description]', '$_POST[size]', '$_POST[color]', '$image_bdd', 
+    '$_POST[price]', '$_POST[stock]' )");
 
-        header("location: shop_management.php");
-        $message = "Le produit a été ajouté !"; 
+    header("location: shop_management.php");
+    $message = "Le produit a été ajouté !"; 
+}
+
+/********* Add product Form (and input complete if edit) ********/ 
+
+if(isset($_GET['action']) && ($_GET['action'] == 'add-product' || $_GET['action'] == 'edit-product'))
+{
+
+    if(isset($_GET['id_product']))
+    {
+        $result = query_execution("SELECT * FROM products WHERE id_product=$_GET[id_product]");
+        $actual_product = $result->fetch(PDO::FETCH_ASSOC);
     }
 
-    if(isset($_GET['action']) && ($_GET['action'] == 'add-product' || $_GET['action'] == 'edit-product'))
-    {
+//enctype attribut into the form for upload files
+?>
+<h1>Gestion de produit</h1>
 
-        if(isset($_GET['id_product']))
+<div class="product-form-container">
+    <form class="product-form" method="POST" enctype="multipart/form-data" action="">
+
+        <input type="hidden" id="id_product" name="id_product" value="<?php if(isset($actual_product['id_product'])){echo $actual_product['id_product'];} ?>">
+
+        <label for="reference">Référence</label>
+        <input type="text" id="reference" name="reference" required="required" value="<?php if(isset($actual_product['reference'])){echo $actual_product['reference'];} ?>">
+        
+        <label for="category">Catégorie</label>
+        <input type="text" id="catégory" name="category" required="required" value="<?php if(isset($actual_product['category'])){echo $actual_product['category'];} ?>">
+
+        <label for="product_name">Nom du produit</label>
+        <input type="text" id="product_name" name="product_name" required="required" value="<?php if(isset($actual_product['product_name'])){echo $actual_product['product_name'];} ?>">
+
+        <label for="product_description">Description</label>
+        <textarea name="product_description" id="description" cols="30" rows="10"><?php if(isset($actual_product['product_description'])){echo $actual_product['product_description'];} ?></textarea>
+
+        <label for="size">Taille</label>
+        <select name="size" id="size">
+            <option value="none"<?php if(isset($actual_product) && $actual_product['size'] == 'none'){echo 'selected';} ?>>Néant</option>
+            <option value="S"<?php if(isset($actual_product) && $actual_product['size'] == 'S'){echo 'selected';} ?>>S</option>
+            <option value="M"<?php if(isset($actual_product) && $actual_product['size'] == 'M'){echo 'selected';} ?>>M</option>
+            <option value="L"<?php if(isset($actual_product) && $actual_product['size'] == 'L'){echo 'selected';} ?>>L</option>
+            <option value="XL"<?php if(isset($actual_product) && $actual_product['size'] == 'XL'){echo 'selected';} ?>>XL</option>
+            <option value="XXL"<?php if(isset($actual_product) && $actual_product['size'] == 'XXL'){echo 'selected';} ?>>XXL</option>
+        </select>
+
+        <label for="color">Couleur</label>
+        <input type="text" id="color" name="color" value="<?php if(isset($actual_product['color'])){echo $actual_product['color'];} ?>">
+
+        <label for="product_image">Image</label>
+        <input type="hidden" name="MAX_FILE_SIZE" value="3145728">
+        <input type="file" id="image" name="product_image">
+        <?php if(isset($actual_product))
         {
-            $result = query_execution("SELECT * FROM products WHERE id_product=$_GET[id_product]");
-            $actual_product = $result->fetch(PDO::FETCH_ASSOC);
+            echo '<strong>Image actuelle : </strong><br>';
+            echo '<img src="' . $actual_product['product_image'] . '"  width="100" height="100"><br>';
+            echo '<input type="hidden" name="actual_product_image" value="' . $actual_product['product_image'] . '"><br>';
         }
+        ?>
+        
+        <label for="price">Prix</label>
+        <input type="text" id="price" name="price" required="required" value="<?php if(isset($actual_product['price'])){echo $actual_product['price'];} ?>">
 
-    //enctype attribut into the form for upload files
-    ?>
-    <h1>Gestion de produit</h1>
+        <label for="stock">Stock</label>
+        <input type="text" id="stock" name="stock" required="required" value="<?php if(isset($actual_product['stock'])){echo $actual_product['stock'];} ?>">
 
-    <div class="product-form-container">
-        <form class="product-form" method="POST" enctype="multipart/form-data" action="">
-
-            <input type="hidden" id="id_product" name="id_product" value="<?php if(isset($actual_product['id_product'])){echo $actual_product['id_product'];} ?>">
-
-            <label for="reference">Référence</label>
-            <input type="text" id="reference" name="reference" required="required" value="<?php if(isset($actual_product['reference'])){echo $actual_product['reference'];} ?>">
-            
-            <label for="category">Catégorie</label>
-            <input type="text" id="catégory" name="category" required="required" value="<?php if(isset($actual_product['category'])){echo $actual_product['category'];} ?>">
-
-            <label for="product_name">Nom du produit</label>
-            <input type="text" id="product_name" name="product_name" required="required" value="<?php if(isset($actual_product['product_name'])){echo $actual_product['product_name'];} ?>">
-
-            <label for="product_description">Description</label>
-            <textarea name="product_description" id="description" cols="30" rows="10"><?php if(isset($actual_product['product_description'])){echo $actual_product['product_description'];} ?></textarea>
-
-            <label for="size">Taille</label>
-            <select name="size" id="size">
-                <option value="none"<?php if(isset($actual_product) && $actual_product['size'] == 'none'){echo 'selected';} ?>>Néant</option>
-                <option value="S"<?php if(isset($actual_product) && $actual_product['size'] == 'S'){echo 'selected';} ?>>S</option>
-                <option value="M"<?php if(isset($actual_product) && $actual_product['size'] == 'M'){echo 'selected';} ?>>M</option>
-                <option value="L"<?php if(isset($actual_product) && $actual_product['size'] == 'L'){echo 'selected';} ?>>L</option>
-                <option value="XL"<?php if(isset($actual_product) && $actual_product['size'] == 'XL'){echo 'selected';} ?>>XL</option>
-                <option value="XXL"<?php if(isset($actual_product) && $actual_product['size'] == 'XXL'){echo 'selected';} ?>>XXL</option>
-            </select>
-
-            <label for="color">Couleur</label>
-            <input type="text" id="color" name="color" value="<?php if(isset($actual_product['color'])){echo $actual_product['color'];} ?>">
-
-            <label for="product_image">Image</label>
-            <input type="hidden" name="MAX_FILE_SIZE" value="3145728">
-            <input type="file" id="image" name="product_image">
-            <?php if(isset($actual_product))
-            {
-                echo '<strong>Image actuelle : </strong><br>';
-                echo '<img src="' . $actual_product['product_image'] . '"  width="100" height="100"><br>';
-                ?>
-                <input type="hidden" name="actual_product_image" value="<?php $actual_product['product_image'];?>">
-                <?php
-            }
-            ?>
-            
-            <label for="price">Prix</label>
-            <input type="text" id="price" name="price" required="required" value="<?php if(isset($actual_product['price'])){echo $actual_product['price'];} ?>">
-
-            <label for="stock">Stock</label>
-            <input type="text" id="stock" name="stock" required="required" value="<?php if(isset($actual_product['stock'])){echo $actual_product['stock'];} ?>">
-
-            <div class=submit-btn-container>
-                <input type="submit" name="validate" value="Valider">
-            </div>
-        </form>
-
-        <div class="file-transfert-informations">
-            <p><?php echo $message; ?></p>
+        <div class=submit-btn-container>
+            <input type="submit" name="validate" value="Valider">
         </div>
+    </form>
 
+    <div class="file-transfert-informations">
+        <p><?php echo $message; ?></p>
     </div>
 
-    <?php
+</div>
+
+<?php
 
 }
 
-//------- DELETE product
-
+/*****************************************************
+DELETE PRODUCT 
+*****************************************************/
 
 if(isset($_GET['action']) && $_GET['action'] == "delete-product"){
     $result = query_execution("SELECT * FROM products WHERE id_product=$_GET[id_product]");
@@ -204,8 +220,9 @@ if(isset($_GET['action']) && $_GET['action'] == "delete-product"){
     echo "Produit supprimé";
 }
 
-
-//--------------------->> VIEW (SEE products)
+/*************************************************************************************************************************************************
+        VIEW (SEE PRODUCTS)       *******************************************************************************************************************************
+**************************************************************************************************************************************************/
 
 
 $result = query_execution("SELECT * FROM products");
