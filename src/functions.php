@@ -56,75 +56,57 @@ function admin_logged()
     }
 }
 
-
-
 /*
-function upload_image (string $destination, string $input_name, string $submit_name){
+**** CART
+*/
 
-    global $message;
-
-    if(isset($_POST[$submit_name]))
+function create_cart()
+{
+    if(!isset($_SESSION['cart']))
     {
-        $file_informations = $_FILES[$input_name];
-        
-        $file_name = $file_informations['name'];
-        $type_mime = $file_informations['type'];
-        var_dump($type_mime);
-        $file_size = $file_informations['size'];
-        $temporary_file = $file_informations['tmp_name'];
-        $error_code = $file_informations['error'];
-
-
-        // The switch below handles different types of errors related to $_FILES
-        switch ($error_code){
-            case UPLOAD_ERR_OK :
-                $destination = $destination . '/' . $file_name;
-                if (copy($temporary_file, $destination)) {
-                    $message = "Transfert terminé - Fichier = $file_name <br>";
-                    $message .= "Taille = $file_size octets <br>";
-                    $message .= "Type de fichier = $type_mime.";
-                }
-                else {
-                    $message = "Le fichier n'a pas pu être copié sur le serveur.";
-                }
-                break;
-            case UPLOAD_ERR_NO_FILE :
-                $message = "Aucun fichier n'a été téléchargé.";
-                break;
-            case UPLOAD_ERR_INI_SIZE : // value of upload_max_filesize in php.ini changed to 3M.
-                $message = "Fichier $file_name non transféré";
-                $message .= 'Le fichier est trop volumineux (Taille maximale supportée : 3 Mo). ';
-                break;
-            case UPLOAD_ERR_FORM_SIZE :
-                $message = "Fichier $file_name non transféré";
-                $message .= 'Le fichier est trop volumineux (Taille maximale supportée : 3 Mo) ';
-                break;
-            case UPLOAD_ERR_PARTIAL : 
-                $message = "Fichier $file_name non transféré";
-                $message .= ' Problème lors du transfert. Le fichier n\'a été que partiellement téléchargé.';
-                break;
-            case UPLOAD_ERR_NO_TMP_DIR :
-                $message = "Fichier $file_name non transféré";
-                $message .= 'Répertoire temporaire manquant.';
-                break;
-            case UPLOAD_ERR_CANT_WRITE : 
-                $message = "Fichier $file_name non transféré";
-                $message .= 'Erreur lors de l\'écriture du fichier sur le disque. ';
-                break;
-            case UPLOAD_ERR_EXTENSION :
-                $message = "Fichier $file_name non transféré";
-                $message .= 'Transfert stopppé par une extension PHP. ';
-                break;
-            default :  
-                $message = "Fichier non transféré";
-                $mesage .= " (erreur inconnue : $error_code ) . ";       
-        }
-    
-        //The if condition below allows only certain file formats  
-        if($type_mime != ['image/png', 'image/jpeg', 'image/jpg']){
-            $message = "Format d'image non pris en compte. Veuillez fournir un fichier .jpeg, .jpg ou .png";
-        }
-
+        $_SESSION['cart'] = array();
+        $_SESSION['cart']['product_name'] = array();
+        $_SESSION['cart']['id_product'] = array();
+        $_SESSION['cart']['quantity'] = array();
+        $_SESSION['cart']['price'] = array();
     }
 }
-*/
+
+function add_product_to_cart($product_name, $id_product, $quantity, $price)
+{
+    create_cart();
+    $product_position = array_search($id_product, $_SESSION['cart']['id_product']);
+    if($product_position !== false)
+    {
+        $_SESSION['cart']['quantity'][$product_position] += $quantity;
+    }
+    else
+    {
+        $_SESSION['cart']['product_name'][] = $product_name;
+        $_SESSION['cart']['id_product'][] = $id_product;
+        $_SESSION['cart']['quantity'][] = $quantity;
+        $_SESSION['cart']['price'][] = $price;
+    }
+}
+
+function total_amount() 
+{
+    $total = 0;
+    for($i = 0; $i < count($_SESSION['cart']['id_product']); $i++)
+    {
+        $total +=  $_SESSION['cart']['quantity'][$i] * $_SESSION['cart']['price'][$i];
+    }
+    return round($total,2);
+}
+
+function delete_product_of_cart($id_product_delete)
+{
+    $product_position = array_search($id_product_to_delete, $_SESSION['cart']['id_product']);
+    if($product_position !== false)
+    {
+        array_splice($_SESSION['cart']['product_name'],$product_position, 1);
+        array_splice($_SESSION['cart']['id_product'],$product_position, 1);
+        array_splice($_SESSION['cart']['quantity'],$product_position, 1);
+        array_splice($_SESSION['cart']['price'],$product_position, 1);
+    }
+}

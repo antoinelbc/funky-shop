@@ -8,13 +8,14 @@ html {
     top: 0;
     left: 0;
     width: 100%;
-    position: fixed;
+    //position: fixed;
     font-size: 62.5%;
 }
 
 body {
     flex: 1 0;
     font-size: 1.6rem;
+    position: relative;
     /*font-family: 'Quicksand', sans-serif;*/
 }
 

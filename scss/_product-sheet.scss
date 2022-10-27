@@ -1,0 +1,32 @@
+.product-sheet-container{
+    display: flex;
+}
+
+.product-sheet-image_container, .product-sheet-desc-container{
+    flex: 1 50%;
+}
+
+.product-sheet-image_container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    .adaptive-img--contain{
+        height: 12em;
+        width: 12em;
+    }
+}
+
+.product-sheet-desc-container{
+    h2{
+        padding-bottom: 0.5em;
+    }
+    .features, .description, .price-and-stock{
+        margin-top: 1em;
+        padding-top: 0.5em;
+        display: flex;
+        flex-direction: column;
+        gap: 0.5em;
+        border-top: 2px solid black;
+
+    }
+}

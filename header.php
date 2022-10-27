@@ -13,6 +13,8 @@ require_once("src/init.php");
     <title>Funky Shop</title>
     <link href="./assets/styles/style.css" rel="stylesheet">
     <link href="../assets/styles/style.css" rel="stylesheet">
+
+
 </head>
 <body>
     <header>
@@ -45,5 +47,5 @@ require_once("src/init.php");
         </nav>
         </div>
     </header>
-    <section>
+    <section class="page-container">
         <div class="global-container">
