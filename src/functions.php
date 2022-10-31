@@ -99,7 +99,7 @@ function total_amount()
     return round($total,2);
 }
 
-function delete_product_of_cart($id_product_delete)
+function delete_product_of_cart($id_product_to_delete)
 {
     $product_position = array_search($id_product_to_delete, $_SESSION['cart']['id_product']);
     if($product_position !== false)
