@@ -1,0 +1,10 @@
+.members-table {
+    margin: 1em 0em;
+    border: 1px solid black;
+    border-collapse: collapse;
+    th, td{
+        padding: 8px;
+        border: 1px solid black;
+        text-align: center;
+    }
+}

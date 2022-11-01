@@ -16,7 +16,6 @@ if(isset($_POST['add-to-cart']))
     $result = query_execution("SELECT * FROM products WHERE id_product ='$_POST[id_product]'");
     $product = $result->fetch(PDO::FETCH_ASSOC);
     add_product_to_cart($product['product_name'], $_POST['id_product'], $_POST['quantity'], $product['price']);
-
 }
 
 /***************************************************** 
@@ -96,14 +95,18 @@ if(isset($_POST['add-to-cart']))
 
 ?>
 
-<h2>Mon Panier</h2>
+<h1>Mon Panier</h1>
+
 <table class="cart-table">
-    <tr>
-        <th>Produit</th>
-        <th>Quantité</th>
-        <th>Prix unitaire</th>
-        <th>Action</th>
-    </tr>
+    <thead>
+        <tr>
+            <th>Produit</th>
+            <th>Quantité</th>
+            <th>Prix unitaire</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
     <?php
     //If cart is empty :
     if(empty($_SESSION['cart']['id_product'])) 
@@ -128,7 +131,8 @@ if(isset($_POST['add-to-cart']))
                     if(isset($_GET["action"]) && $_GET['action'] == "delete-products-from-cart")
                     {
                         $id_product = $_SESSION['cart']['id_product'][$i];
-                        delete_product_of_cart($id_product);                    }
+                        delete_product_of_cart($id_product);                    
+                    }
                     ?>
                 </td>
             </tr>
@@ -136,33 +140,38 @@ if(isset($_POST['add-to-cart']))
         }
         ?>
         <tr>
-            <td> <strong>Total</strong></td>
+            <td><strong>Total</strong></td>
             <td colspan ="3"> <?= total_amount()?> € </td>
         </tr>
         <tr>
             <td>
                 <a href="?action=delete-cart">Vider mon panier</a>
             </td>
+            <td colspan="3">
+            <?php
+            if(member_logged())
+            {
+                ?>
+                <form method="POST" action="">
+                    <input type="submit" name="validate-cart" value="Valider mon panier">
+                </form>
+            <?php
+            }
+            else
+            {
+            ?>
+                <p>Veuillez vous <a href="login.php">connecter</a>afin de procéder au paiement </p>
+                <p>Pas encore membre ? N'hésitez pas à vous <a href="register.php">inscrire</a></p>
+            <?php
+            }
+            ?>
+            </td>
         </tr>
-        </table>
-        <?php
-        if(member_logged())
-        {
-            ?>
-            <form method="POST" action="">
-                <input type="submit" name="validate-cart" value="Valider mon panier">
-            </form>
-            <?php
-        }
-        else
-        {
-            ?>
-            <p>Veuillez vous <a href="login.php">connecter</a>afin de procéder au paiement </p>
-            <p>Pas encore membre ? N'hésitez pas à vous <a href="register.php">inscrire</a></p>
-            <?php
-        }
-}
-    
+    </tbody>
+    <?php
+    }
+    ?>
+</table>
 
-
+<?php
 require_once("footer.php");

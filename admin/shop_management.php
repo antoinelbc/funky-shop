@@ -148,7 +148,8 @@ if(isset($_GET['action']) && ($_GET['action'] == 'add-product' || $_GET['action'
 
 <div class="product-form-container">
     <form class="product-form" method="POST" enctype="multipart/form-data" action="">
-
+        
+        <h2>Produit</h2>
         <input type="hidden" id="id_product" name="id_product" value="<?php if(isset($actual_product['id_product'])){echo $actual_product['id_product'];} ?>">
 
         <label for="reference">Référence</label>
@@ -230,9 +231,9 @@ $result = query_execution("SELECT * FROM products");
 
     <h1>Gestion de la boutique</h1>
 
-    <a href="?action=add-product">Ajouter un produit</a>
+    <a class="add-product-btn" href="?action=add-product">Ajouter un produit</a>
 
-    <p>Nombre de produits dans la boutique : <?= $result->rowCount(); ?>  </p>
+    <p class="products-number">Nombre de produits dans la boutique : <?= $result->rowCount(); ?>  </p>
     <table class="products-table">
         <thead>
             <tr>
@@ -267,8 +268,8 @@ $result = query_execution("SELECT * FROM products");
                 <td> <img src="<?= $product['product_image']; ?>" height="70" width="70" ></td>
                 <td><?= $product['price']; ?> €</td>
                 <td><?= $product['stock']; ?></td>
-                <td><a href="?action=edit-product&id_product=<?= $product['id_product'] ?>">Modifier</a></td>
-                <td><a href="?action=delete-product&id_product=<?= $product['id_product'] ?>" onclick="return confirm('Etes-vous sûr de vouloir supprimer ce produit ?');">Supprimer</a></td>
+                <td class="action-icon"><a href="?action=edit-product&id_product=<?= $product['id_product'] ?>"><div class="adaptive-img--contain"><span><img src="<?= ROOT_SITE ?>assets/img/icons/edit-icon.svg"></span></div></a></td>
+                <td class="action-icon"><a href="?action=delete-product&id_product=<?= $product['id_product'] ?>" onclick="return confirm('Etes-vous sûr de vouloir supprimer ce produit ?');"><div class="adaptive-img--contain"><span><img src="<?= ROOT_SITE ?>assets/img/icons/delete-icon.svg"></span></div></a></td>
             </tr>
             <?php
         }
