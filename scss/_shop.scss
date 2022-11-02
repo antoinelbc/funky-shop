@@ -1,18 +1,22 @@
 .shop-container{
     display: flex;
-    flex-direction: column;
+    //flex-direction: column;
     gap: 5em;
 }
 
 .categories-menu-container{
-    background: #D4F6CC;
+    //background: #D4F6CC;
+    border: 1px solid black;
     padding: 2em;
+    min-width:10em;
+    max-width: 10em;
     ul{
         display: flex;
+        flex-direction:column;
         gap: 1em;
     }
     a{
-        color: #003865;
+        color: #25262A;
         font-size: 2rem;
         font-weight: bold;
     }
@@ -28,4 +32,11 @@
     flex-direction: column;
     align-items: center;
     gap: 1em;
+}
+
+.see-product-btn{
+    background-color: var(--primary-purple);
+    color: white;
+    padding: 12px;
+    border-radius: 4px;
 }

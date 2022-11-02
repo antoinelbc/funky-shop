@@ -1,10 +1,18 @@
 .members-table {
     margin: 1em 0em;
-    border: 1px solid black;
+    //border: 1px solid black;
     border-collapse: collapse;
+    thead{
+        background-color: #003865;
+        color: white;
+        font-weight: 300;
+    }
+    tbody tr:nth-of-type(odd) {
+        background: #eee;
+    }
     th, td{
         padding: 8px;
-        border: 1px solid black;
+        border: 1px solid #ccc;
         text-align: center;
     }
 }

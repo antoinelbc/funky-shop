@@ -31,8 +31,8 @@ require_once("src/init.php");
                     echo '<li><a href="'. ROOT_SITE . 'admin/shop_management.php">Gestion de la boutique</a></li>';
                 }
                 if(member_logged()){
-                    echo '<li><a href="'. ROOT_SITE . 'account.php">Mon compte<div class="adaptive-img--contain"><span><img src="' . ROOT_SITE .'assets/img/icons/account-icon.svg"></span></div></a></li>';
                     echo '<li><a href="'. ROOT_SITE . 'shop.php">Boutique</a></li>';
+                    echo '<li><a href="'. ROOT_SITE . 'account.php">Mon compte<div class="adaptive-img--contain"><span><img src="' . ROOT_SITE .'assets/img/icons/account-icon.svg"></span></div></a></li>';
                     echo '<li><a href="'. ROOT_SITE . 'cart.php">Mon Panier<div class="adaptive-img--contain"><span><img src="' . ROOT_SITE .'assets/img/icons/cart-icon.svg"></span></div></a></li>';
                     echo '<li><a href="'. ROOT_SITE . 'login.php?action=logout">Se déconnecter<div class="adaptive-img--contain"><span><img src="' . ROOT_SITE .'assets/img/icons/logout-icon.svg"></span></div></a></li>';
                 }

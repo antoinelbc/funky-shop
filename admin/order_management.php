@@ -30,7 +30,7 @@ $result = query_execution("SELECT * FROM orders INNER JOIN member ON orders.id_m
 
 <h2>Commandes</h2>
 
-<p>Nombre de commandes : <?= $result->rowCount() ?></p>
+<p>Nombre de commandes : <strong><?= $result->rowCount() ?></strong></p>
 
 <table class="orders-table">
         <thead>

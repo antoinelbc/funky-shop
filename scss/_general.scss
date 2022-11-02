@@ -1,3 +1,10 @@
+@import url('https://fonts.googleapis.com/css2?family=Dosis:wght@200;300;400;500;600;700&display=swap');
+
+:root {
+    --primary-purple: #7971EA;
+    --secondary-purple: #5A50E5;
+  }
+
 html,
 body {
     overflow: auto;
@@ -17,7 +24,7 @@ body {
     flex: 1 0;
     font-size: 1.6rem;
     position: relative;
-    /*font-family: 'Quicksand', sans-serif;*/
+    font-family: 'Dosis', sans-serif;
 }
 
 h1{

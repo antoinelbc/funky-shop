@@ -46,32 +46,39 @@ if(isset($_POST['register']))
 //--------------------->> VIEW
 ?>
 
-<form method="POST" action="">
-    <label for="pseudo">Pseudo</label><br>
-    <input type="text" id="pseudo" name="pseudo" maxlength="20" pattern="[a-zA-Z0-9-_.âàéèêîïôö]{1,20}" title="Caractères acceptés : a-zA-Z0-9-_." required="required"><br><br>
-          
-    <label for="pass">Mot de passe</label><br>
-    <input type="password" id="pass" name="pass" maxlength="32" required="required"><br><br>
-          
-    <label for="lastname">Nom</label><br>
-    <input type="text" id="lastname" name="lastname" maxlength="32" pattern="/^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð ,.'-\s*+$/u{1,32}" required="required"><br><br>
-          
-    <label for="firstname">Prénom</label><br>
-    <input type="text" id="firstname" name="firstname" maxlength="32" pattern="/^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð ,.'-\s]+$/u{1,32}" required="required"><br><br>
-  
-    <label for="email">Email</label><br>
-    <input type="email" id="email" name="email" placeholder="exemple@gmail.com" maxlength="50" pattern="[A-Za-z0-9](([_\.\-]?[a-zA-Z0-9]+)*)@([A-Za-z0-9]+)(([_\.\-]?[a-zA-Z0-9]+)*)\.([A-Za-z]{2,})" required="required"><br><br>
-    
-    <label for="adress">Adresse</label><br>
-    <textarea id="adress" name="adress" maxlength="50" pattern="[a-zA-Z0-9-_.]{5,50}" title="caractères acceptés : a-zA-Z0-9-_." required="required"></textarea><br><br>
+<form class="form-template register-form" method="POST" action="">
+    <h2>Inscription</h2>
+    <div class="form-parts-container">
+        <div class="form-part">
+            <label for="pseudo">Pseudo</label><br>
+            <input type="text" id="pseudo" name="pseudo" maxlength="20" pattern="[a-zA-Z0-9-_.âàéèêîïôö]{1,20}" title="Caractères acceptés : a-zA-Z0-9-_." required="required"><br><br>
+                
+            <label for="pass">Mot de passe</label><br>
+            <input type="password" id="pass" name="pass" maxlength="32" required="required"><br><br>
+                
+            <label for="lastname">Nom</label><br>
+            <input type="text" id="lastname" name="lastname" maxlength="32" pattern="/^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð ,.'-\s*+$/u{1,32}" required="required"><br><br>
+                
+            <label for="firstname">Prénom</label><br>
+            <input type="text" id="firstname" name="firstname" maxlength="32" pattern="/^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð ,.'-\s]+$/u{1,32}" required="required"><br><br>
+        </div>
+        <div class="form-part">
+            <label for="email">Email</label><br>
+            <input type="email" id="email" name="email" placeholder="exemple@gmail.com" maxlength="50" pattern="[A-Za-z0-9](([_\.\-]?[a-zA-Z0-9]+)*)@([A-Za-z0-9]+)(([_\.\-]?[a-zA-Z0-9]+)*)\.([A-Za-z]{2,})" required="required"><br><br>
+            
+            <label for="adress">Adresse</label><br>
+            <textarea id="adress" name="adress" maxlength="50" pattern="[a-zA-Z0-9-_.]{5,50}" title="caractères acceptés : a-zA-Z0-9-_." required="required"></textarea><br><br>
 
-    <label for="city">Ville</label><br>
-    <input type="text" id="city" name="city" maxlength="32" pattern="[a-zA-Z-]{5,32}" title="caractères acceptés : a-zA-Z-" required="required"><br><br>
-          
-    <label for="zip_code">Code Postal</label><br>
-    <input type="text" id="zip_code" name="zip_code" pattern="[0-9]{5}" title="5 chiffres requis : 0-9"><br><br>
- 
-    <input type="submit" name="register" value="S'inscrire">
+            <label for="city">Ville</label><br>
+            <input type="text" id="city" name="city" maxlength="32" pattern="[a-zA-Z-]{5,32}" title="caractères acceptés : a-zA-Z-" required="required"><br><br>
+                
+            <label for="zip_code">Code Postal</label><br>
+            <input type="text" id="zip_code" name="zip_code" pattern="[0-9]{5}" title="5 chiffres requis : 0-9"><br><br>
+        </div>
+    </div>
+    <div class="submit-btn-container">
+        <input type="submit" name="register" value="S'inscrire">
+    </div>
 </form>
 
 

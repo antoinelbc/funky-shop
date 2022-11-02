@@ -34,7 +34,7 @@ $products_categories = query_execution("SELECT DISTINCT category FROM products")
                 <h2><?= $product['product_name'] ?></h2>
                 <a href="product-sheet.php?id_product=<?=$product['id_product']?>"><img src="<?= $product['product_image'] ?>" alt="photo du produit" width="150" height="150"></a>
                 <p><?= $product['price'] ?> €</p>
-                <a href="product-sheet.php?id_product=<?=$product['id_product']?>">Voir la fiche produit</a>
+                <a class="see-product-btn" href="product-sheet.php?id_product=<?=$product['id_product']?>">Voir le produit</a>
             </div>
 
             <?php

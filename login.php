@@ -47,14 +47,17 @@ if($_POST)
 //--------------------->> VIEW
 ?>
 
-<form method="POST" action="">
-    <label for="pseudo">Pseudo</label><br>
-    <input type="text" id="pseudo" name="pseudo"><br><br>
+<form class="form-template login-form"method="POST" action="">
+    <h2>Connexion</h2>
+    <label for="pseudo">Pseudo</label>
+    <input type="text" id="pseudo" name="pseudo">
          
-    <label for="pass">Mot de passe</label><br>
-    <input type="password" id="pass" name="pass" required="required"><br><br>
+    <label for="pass">Mot de passe</label>
+    <input type="password" id="pass" name="pass" required="required">
  
-     <input type="submit" name="login" value="Se connecter">
+    <div class="submit-btn-container">
+        <input type="submit" name="login" value="Se connecter">
+    </div>
 </form>
 
 <?php require_once("footer.php"); ?>

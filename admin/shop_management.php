@@ -147,53 +147,57 @@ if(isset($_GET['action']) && ($_GET['action'] == 'add-product' || $_GET['action'
 <h1>Gestion de produit</h1>
 
 <div class="product-form-container">
-    <form class="product-form" method="POST" enctype="multipart/form-data" action="">
+    <form class="form-template product-form" method="POST" enctype="multipart/form-data" action="">
         
         <h2>Produit</h2>
-        <input type="hidden" id="id_product" name="id_product" value="<?php if(isset($actual_product['id_product'])){echo $actual_product['id_product'];} ?>">
+        <div class="form-parts-container">
+            <div class="form-part">
+                <input type="hidden" id="id_product" name="id_product" value="<?php if(isset($actual_product['id_product'])){echo $actual_product['id_product'];} ?>">
 
-        <label for="reference">Référence</label>
-        <input type="text" id="reference" name="reference" required="required" value="<?php if(isset($actual_product['reference'])){echo $actual_product['reference'];} ?>">
-        
-        <label for="category">Catégorie</label>
-        <input type="text" id="catégory" name="category" required="required" value="<?php if(isset($actual_product['category'])){echo $actual_product['category'];} ?>">
+                <label for="reference">Référence</label>
+                <input type="text" id="reference" name="reference" required="required" value="<?php if(isset($actual_product['reference'])){echo $actual_product['reference'];} ?>">
+                
+                <label for="category">Catégorie</label>
+                <input type="text" id="catégory" name="category" required="required" value="<?php if(isset($actual_product['category'])){echo $actual_product['category'];} ?>">
 
-        <label for="product_name">Nom du produit</label>
-        <input type="text" id="product_name" name="product_name" required="required" value="<?php if(isset($actual_product['product_name'])){echo $actual_product['product_name'];} ?>">
+                <label for="product_name">Nom du produit</label>
+                <input type="text" id="product_name" name="product_name" required="required" value="<?php if(isset($actual_product['product_name'])){echo $actual_product['product_name'];} ?>">
 
-        <label for="product_description">Description</label>
-        <textarea name="product_description" id="description" cols="30" rows="10"><?php if(isset($actual_product['product_description'])){echo $actual_product['product_description'];} ?></textarea>
+                <label for="product_description">Description</label>
+                <textarea name="product_description" id="description" cols="30" rows="10"><?php if(isset($actual_product['product_description'])){echo $actual_product['product_description'];} ?></textarea>
+            </div>
+            <div class="form-part">
+                <label for="size">Taille</label>
+                <select name="size" id="size">
+                    <option value="none"<?php if(isset($actual_product) && $actual_product['size'] == 'none'){echo 'selected';} ?>>Néant</option>
+                    <option value="S"<?php if(isset($actual_product) && $actual_product['size'] == 'S'){echo 'selected';} ?>>S</option>
+                    <option value="M"<?php if(isset($actual_product) && $actual_product['size'] == 'M'){echo 'selected';} ?>>M</option>
+                    <option value="L"<?php if(isset($actual_product) && $actual_product['size'] == 'L'){echo 'selected';} ?>>L</option>
+                    <option value="XL"<?php if(isset($actual_product) && $actual_product['size'] == 'XL'){echo 'selected';} ?>>XL</option>
+                    <option value="XXL"<?php if(isset($actual_product) && $actual_product['size'] == 'XXL'){echo 'selected';} ?>>XXL</option>
+                </select>
 
-        <label for="size">Taille</label>
-        <select name="size" id="size">
-            <option value="none"<?php if(isset($actual_product) && $actual_product['size'] == 'none'){echo 'selected';} ?>>Néant</option>
-            <option value="S"<?php if(isset($actual_product) && $actual_product['size'] == 'S'){echo 'selected';} ?>>S</option>
-            <option value="M"<?php if(isset($actual_product) && $actual_product['size'] == 'M'){echo 'selected';} ?>>M</option>
-            <option value="L"<?php if(isset($actual_product) && $actual_product['size'] == 'L'){echo 'selected';} ?>>L</option>
-            <option value="XL"<?php if(isset($actual_product) && $actual_product['size'] == 'XL'){echo 'selected';} ?>>XL</option>
-            <option value="XXL"<?php if(isset($actual_product) && $actual_product['size'] == 'XXL'){echo 'selected';} ?>>XXL</option>
-        </select>
+                <label for="color">Couleur</label>
+                <input type="text" id="color" name="color" value="<?php if(isset($actual_product['color'])){echo $actual_product['color'];} ?>">
 
-        <label for="color">Couleur</label>
-        <input type="text" id="color" name="color" value="<?php if(isset($actual_product['color'])){echo $actual_product['color'];} ?>">
+                <label for="product_image">Image</label>
+                <input type="hidden" name="MAX_FILE_SIZE" value="3145728">
+                <input type="file" id="image" name="product_image">
+                <?php if(isset($actual_product))
+                {
+                    echo '<strong>Image actuelle : </strong><br>';
+                    echo '<img src="' . $actual_product['product_image'] . '"  width="100" height="100"><br>';
+                    echo '<input type="hidden" name="actual_product_image" value="' . $actual_product['product_image'] . '"><br>';
+                }
+                ?>
+                
+                <label for="price">Prix</label>
+                <input type="text" id="price" name="price" required="required" value="<?php if(isset($actual_product['price'])){echo $actual_product['price'];} ?>">
 
-        <label for="product_image">Image</label>
-        <input type="hidden" name="MAX_FILE_SIZE" value="3145728">
-        <input type="file" id="image" name="product_image">
-        <?php if(isset($actual_product))
-        {
-            echo '<strong>Image actuelle : </strong><br>';
-            echo '<img src="' . $actual_product['product_image'] . '"  width="100" height="100"><br>';
-            echo '<input type="hidden" name="actual_product_image" value="' . $actual_product['product_image'] . '"><br>';
-        }
-        ?>
-        
-        <label for="price">Prix</label>
-        <input type="text" id="price" name="price" required="required" value="<?php if(isset($actual_product['price'])){echo $actual_product['price'];} ?>">
-
-        <label for="stock">Stock</label>
-        <input type="text" id="stock" name="stock" required="required" value="<?php if(isset($actual_product['stock'])){echo $actual_product['stock'];} ?>">
-
+                <label for="stock">Stock</label>
+                <input type="text" id="stock" name="stock" required="required" value="<?php if(isset($actual_product['stock'])){echo $actual_product['stock'];} ?>">
+            </div>
+        </div>
         <div class=submit-btn-container>
             <input type="submit" name="validate" value="Valider">
         </div>
@@ -233,7 +237,7 @@ $result = query_execution("SELECT * FROM products");
 
     <a class="add-product-btn" href="?action=add-product">Ajouter un produit</a>
 
-    <p class="products-number">Nombre de produits dans la boutique : <?= $result->rowCount(); ?>  </p>
+    <p class="products-number">Nombre de produits dans la boutique : <strong><?= $result->rowCount(); ?> </strong></p>
     <table class="products-table">
         <thead>
             <tr>

@@ -23,7 +23,7 @@ $result = query_execution("SELECT * FROM member");
 
 <h1>Gestion des membres</h1>
 
-    <p>Membres inscrits sur le site : <?= $result->rowCount(); ?>  </p>
+    <p>Membres inscrits sur le site : <strong><?= $result->rowCount(); ?></strong></p>
     <table class="members-table">
         <thead>
             <tr>

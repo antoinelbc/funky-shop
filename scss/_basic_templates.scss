@@ -1,0 +1,138 @@
+
+/* 
+********************* TABLES
+*/
+
+.members-table, .products-table, .orders-table, .orders-details-table {
+    margin: 1em 0em;
+    //border: 1px solid black;
+    border-collapse: collapse;
+    thead{
+        background-color: #003865;
+        color: white;
+        font-weight: 300;
+    }
+    tbody tr:nth-of-type(odd) {
+        background: #eee;
+    }
+    th, td{
+        padding: 8px;
+        border: 1px solid #ccc;
+        text-align: center;
+    }
+}
+
+.products-table {
+    .action-icon a {
+        display: flex;
+        justify-content: center;
+    }
+    .action-icon a .adaptive-img--contain {
+        width: 32px;
+        height: 32px;
+        filter: invert(11%) sepia(77%) saturate(2719%) hue-rotate(191deg)
+            brightness(100%) contrast(101%);
+    }
+}
+
+.orders-table a{
+    color: #325f83;
+}
+.orders-table a:hover{
+    color: #003865;
+}
+
+.orders-details-table .product-cell {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* 
+********************* FORMS
+*/
+
+.form-template {
+    display: flex;
+    flex-direction: column;
+    padding: 1.2em;
+    box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 2px 6px 2px;
+    border-radius: 6px;
+    h2 {
+        margin-bottom: 0.8em;
+    }
+    label {
+        margin-top: 0.6em;
+        padding-left: 0.2em;
+        font-size: 1.2rem;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        color: #003865;
+    }
+    input,
+    textarea {
+        padding: 4px;
+        background: #e5ebef;
+        border: none;
+        border-radius: 4px;
+    }
+    .submit-btn-container {
+        margin-top: 2em;
+        display: flex;
+        justify-content: center;
+        input {
+            width: 40%;
+            background: #003865;
+            color: white;
+            text-transform: uppercase;
+            font-size: 1.2rem;
+            font-weight: bold;
+            letter-spacing: 1px;
+            padding: 1em;
+            transition: 0.3s ease;
+            cursor: pointer;
+        }
+        input:hover{
+            background: #325f83;
+        }
+    }
+
+}
+
+.register-form, .product-form{
+    min-width: 40em;
+    max-width: 40em;
+    .form-parts-container{
+        display: flex;
+        justify-content: space-evenly;
+        gap: 2em;
+    }
+    .form-part{
+        padding: 2em;
+    }
+    .form-part input, textarea, select{
+        margin-top: 0.6em;
+        width: 18em;
+    }
+    .form-part textarea{
+        resize: vertical;
+        height: 7em;
+    }
+}
+
+.login-form{
+    min-width: 30em;
+    max-width: 30em;
+    input, label{
+        margin-bottom: 1em;
+    }
+}
+
+.product-form{
+    input, textarea, select{
+        margin: 1em 0em 0.5em 0em;
+    }
+    textarea{
+        resize: vertical;
+    }
+}
